@@ -53,9 +53,9 @@
     </header>
     <section>
         <h2>자기소개</h2>
-        <p>안녕하세요! 저는 [김수민]입니다. 이 페이지는 저를 소개하기 위해 만들어졌습니다.</p>
-        <p>취미: [badminton,game]</p>
-        <p>특기: [badminton,game]</p>
+        <p>안녕하세요! 저는 [gimsumin]입니다. 이 페이지는 저를 소개하기 위해 만들어졌습니다.</p>
+        <p>취미: [game]</p>
+        <p>특기: [game]</p>
         <p>현재 하고 있는 일: [student]</p>
     </section>
     <section>
@@ -72,44 +72,68 @@
     </section>
     <footer>
         <p>&copy; 2025 나의 소개 페이지</p>
-    </footer>
+        <!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>날씨 정보</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    #weather-container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>원하는 지역의 날씨 정보를 확인하세요</h1>
+  <input type="text" id="city" placeholder="도시 이름을 입력하세요" />
+  <button onclick="getWeather()">날씨 확인</button>
+
+  <div id="weather-container"></div>
+
+  <script>
+    const apiKey = '32a9e40069ab16463f94f30fe7a4a8c2'; // OpenWeather API 키
+
+    function getWeather() {
+      const city = document.getElementById('city').value;
+      if (city === '') {
+        alert('도시 이름을 입력하세요.');
+        return;
+      }
+
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=kr`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.cod === 200) {
+            const weather = data.weather[0].description;
+            const temperature = data.main.temp;
+            const humidity = data.main.humidity;
+            const windSpeed = data.wind.speed;
+
+            const weatherHTML = `
+              <h2>${city}의 날씨</h2>
+              <p>날씨: ${weather}</p>
+              <p>온도: ${temperature}°C</p>
+              <p>습도: ${humidity}%</p>
+              <p>풍속: ${windSpeed}m/s</p>
+            `;
+            document.getElementById('weather-container').innerHTML = weatherHTML;
+          } else {
+            document.getElementById('weather-container').innerHTML = `<p>날씨 정보를 가져올 수 없습니다. 다시 시도해주세요.</p>`;
+          }
+        })
+        .catch(error => {
+          console.error('오류:', error);
+          document.getElementById('weather-container').innerHTML = `<p>오류가 발생했습니다. 다시 시도해주세요.</p>`;
+        });
+    }
+  </script>
 </body>
 </html>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        line-height: 1.6;
-        background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1, #fbc2eb);
-        background-size: 300% 300%;
-        animation: gradientBG 10s ease infinite;
-        color: #333;
-    }
-
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    header {
-        background: rgba(76, 175, 80, 0.8);
-        color: #fff;
-        padding: 1rem 0;
-        text-align: center;
-        border-bottom: 2px solid #fff;
-    }
-    section {
-        max-width: 800px;
-        margin: 2rem auto;
-        padding: 1rem;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
-    footer {
-        text-align: center;
-        padding: 1rem;
-        margin-top: 2rem;
-        background: rgba(51, 51, 51, 0.9);
